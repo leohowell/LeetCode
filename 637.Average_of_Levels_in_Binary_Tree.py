@@ -10,14 +10,14 @@ class TreeNode(object):
 
 
 class Solution(object):
-    def levelOrderBottom(self, root):
+    def averageOfLevels(self, root):
         """
         :type root: TreeNode
         :rtype: List[List[int]]
         """
         res = []
         self.pre_order(root, 0, res)
-        return res[::-1]
+        return [sum(x) / len(x) for x in res]
 
     @classmethod
     def pre_order(cls, root, level, res):
@@ -50,5 +50,5 @@ nodes['f'].right = nodes['m']
 nodes['g'].left = nodes['n']
 nodes['g'].right = nodes['o']
 
-print(Solution().levelOrderBottom(nodes['a']))
+print(Solution().averageOfLevels(nodes['a']))
 
