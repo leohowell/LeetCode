@@ -10,14 +10,14 @@ class TreeNode(object):
 
 
 class Solution(object):
-    def levelOrder(self, root):
+    def levelOrderBottom(self, root):
         """
         :type root: TreeNode
         :rtype: List[List[int]]
         """
         res = []
         self.pre_order(root, 0, res)
-        return res
+        return res[::-1]
 
     @classmethod
     def pre_order(cls, root, level, res):
