@@ -13,7 +13,6 @@ class TreeNode(object):
 def get_linked_list2(data):
     data = json.loads(data)
     nodes = [TreeNode(val) for val in data]
-    print(nodes)
     for i, node in enumerate(nodes):
         left = (i+1) * 2 - 1
         right = (i+1) * 2
@@ -37,7 +36,6 @@ def get_linked_list(data):
             if not data:
                 break
             val = data.pop()
-            print('val', val)
             if val is None:
                 current_level.append(None)
             else:
