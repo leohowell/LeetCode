@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import asyncio
+import sys
 
-import requests
+import aiohttp
 
 
 URL = 'https://leetcode.com/contest/api/ranking/' \
@@ -16,16 +18,15 @@ def print_rank(data):
     print('+{}+'.format('-'*45))
 
 
-def get_user_rank(week, username):
-    for i in range(1, 20):
-        url = URL.format(week, i)
-        data = requests.get(url).json()
-        for user in data['total_rank']:
-            if user['username'] == username:
-                print_rank(user)
-                return
-        print("Rank out of {}".format(i * 50))
-    print("It's no need show the rest result.")
+async def get_user_rank(week, page_id, username):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(URL.format(week, page_id)) as resp:
+            data = await resp.json()
+            print('Check rank < {}'.format(page_id * 50))
+            for user in data['total_rank']:
+                if user['username'] == username:
+                    print_rank(user)
+                    sys.exit(0)
 
 
 if __name__ == '__main__':
@@ -33,4 +34,9 @@ if __name__ == '__main__':
     parser.add_argument('week', type=int)
     parser.add_argument('username', type=str)
     args = parser.parse_args()
-    get_user_rank(args.week, args.username)
+
+    loop = asyncio.get_event_loop()
+    tasks = [get_user_rank(args.week, i, args.username) for i in range(1, 30)]
+    loop.run_until_complete(asyncio.gather(*tasks))
+    loop.close()
+
