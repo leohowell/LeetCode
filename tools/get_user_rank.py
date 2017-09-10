@@ -5,9 +5,9 @@ import asyncio
 import functools
 import importlib
 import json
+import multiprocessing
 import sys
 import time
-import multiprocessing
 
 import aiohttp
 import gevent
@@ -169,18 +169,18 @@ if __name__ == '__main__':
     start_time = time.time()
     week_list = requests.get(WEEK_URL).json()
     latest_week = week_list['contests'][0]['title'].split(' ')[-1]
-    print('LeetCode Weekly Contest {} (fetch in {:.3f}s)\n'.format(
+    print('LeetCode Weekly Contest {} (fetched in {:.3f}s)\n'.format(
         latest_week, time.time() - start_time)
     )
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--user', type=str, default='leohowell')
     parser.add_argument('--week', type=int, default=latest_week)
-    parser.add_argument('--engine', type=str, default='uvloop', required=False)
-    cli_args = parser.parse_args()
+    parser.add_argument('--engine', type=str, default='uvloop')
+    args = parser.parse_args()
 
-    if cli_args.engine in REGISTRY:
-        REGISTRY[cli_args.engine](cli_args.week,cli_args.user)
+    if args.engine in REGISTRY:
+        REGISTRY[args.engine](args.week, args.user)
         print('Finished in {:.3f}s'.format(time.time() - START))
     else:
-        print('[error] --core argument: {}'.format(cli_args.engine))
+        print('[error] --core argument: {}'.format(args.engine))
