@@ -14,5 +14,5 @@ select ifnull(
 -- 官方题解
 select (select distinct salary
         from Employee
-        order by salary
+        order by salary desc
            limit 1 offset 1) as SecondHighestSalary
