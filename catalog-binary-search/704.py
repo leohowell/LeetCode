@@ -34,7 +34,8 @@ class Solution:
     def search(self, nums: List[int], target: int) -> int:
         low, high = 0, len(nums) - 1
         while low <= high:
-            middle = (low + high) // 2
+            # 防止求中值的时候溢出
+            middle = (high - low) // 2 + low
             if nums[middle] == target:
                 return middle
             elif nums[middle] > target:
