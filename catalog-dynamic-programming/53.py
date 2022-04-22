@@ -18,3 +18,19 @@ class Solution(object):
 
 
 print(Solution().maxSubArray([-2,1,-3,4,-1,2,1,-5,4]))
+
+
+# 动态规划 我的解法
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        # dp[i] i代表当前最优解
+        dp = [0] * n
+        dp[0] = nums[0]
+
+        for i in range(1, n):
+            # 状态转移方程
+            val = nums[i]
+            dp[i] = max(dp[i - 1] + val, val)
+        return max(dp)
