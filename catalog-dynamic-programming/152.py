@@ -50,3 +50,21 @@ class Solution:
                     dp_max[i] = mul / dp_neg
 
         return int(max(dp_max))
+
+
+# 官方解答
+# 由于乘法符号会变，因此需要维护两个dp数组
+def solution(nums):
+    n = len(nums)
+
+    dp_max = [0] * n
+    dp_min = [0] * n
+
+    dp_max[0] = nums[0]
+    dp_min[0] = nums[0]
+
+    for i in range(1, n):
+        val = nums[i]
+        dp_max[i] = max(dp_max[i-1] * val, dp_min[i-1] * val, val)
+        dp_min[i] = min(dp_max[i-1] * val, dp_min[i-1] * val, val)
+    return max(dp_max)
