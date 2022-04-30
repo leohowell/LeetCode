@@ -1,5 +1,8 @@
 # 139. 单词拆分
 # https://leetcode-cn.com/problems/word-break/
+# 关键点：当前结果与下一结果之间的关系
+# 提示：取最后一个字母构建hash
+
 
 from typing import List
 
