@@ -10,46 +10,24 @@ class Solution:
         # 子数组
         #  [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。
         # [2, 3, 1, 2, 4, 3] 7
+        if not nums:
+            return 0
+
         left = 0
         right = 0
-        min_sub_array_len = 10**5 + 1
-        last_val = None
-        left_changed = None
 
-        cnt = 0
-        while right < len(nums):
-            cnt += 1
-            sub_array = nums[left : right + 1]
-            if left_changed is None:
-                val = sum(sub_array)
-            elif left_changed:
-                val = last_val - nums[left - 1]
-            else:
-                val = last_val + nums[right]
-            last_val = val
+        n = len(nums)
+        output = n + 1
+        total = 0
 
-            if val >= target:
-                min_sub_array_len = min(min_sub_array_len, len(sub_array))
+        while right < n:
+            total += nums[right]
+            while total >= target:
+                output = min(output, right - left + 1)
+                total -= nums[left]
                 left += 1
-                left_changed = True
-            elif val < target:
-                right += 1
-                left_changed = False
-            else:
-                left += 1
-                left_changed = True
-
-            if left >= right:
-                right += 1
-                last_val -= nums[left - 1]
-                left = right
-                left_changed = False
-
-        print(f"cnt: {cnt}")
-        if min_sub_array_len == 10**5 + 1:
-            return 0
-        else:
-            return min_sub_array_len
+            right += 1
+        return 0 if output == n + 1 else output
 
 
 if __name__ == "__main__":
